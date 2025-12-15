@@ -35,66 +35,69 @@
 * 📍 **Scene-info:** Filtrer koncerter baseret på specifikke scener (Orange, Arena, Avalon, etc.).
 * 🔍 **Metadata:** Hent beskrivelser, genrer og billed-links for hver kunstner.
 
-## 🛠️ Tech Stack
-
-Dette API er bygget med fokus på hastighed og enkelhed.
-
-* **Sprog:** [F.eks. Python / Node.js]
-* **Framework:** [F.eks. Flask / Express / FastAPI]
-* **Database:** [F.eks. MongoDB / JSON-fil / SQLite]
-* **Scraping:** [F.eks. BeautifulSoup / Cheerio]
-
 ## 🚀 Installation
 
 Følg disse trin for at køre projektet lokalt på din maskine.
-
-### Forudsætninger
-* [Node.js / Python installeret]
-* Git
 
 ### Trin-for-trin
 
 1.  **Klon repositoryet**
     ```bash
-    git clone [https://github.com/dit-brugernavn/roskildeAPI.git](https://github.com/dit-brugernavn/roskildeAPI.git)
+    git clone [https://github.com/JonathanRentoft/roskildeAPI.git](https://github.com/JonathanRentoft/roskildeAPI.git)
     cd roskildeAPI
     ```
 
 2.  **Installer afhængigheder**
     ```bash
-    # Hvis det er Node.js
     npm install
-
-    # Hvis det er Python
-    pip install -r requirements.txt
     ```
 
 3.  **Start serveren**
     ```bash
     # Kommando for at starte
-    npm start / python app.py
+    npm start dev
     ```
 
 Serveren kører nu på `http://localhost:3000` (eller din port).
 
 ## 📡 API Endpoints
 
-Her er en oversigt over de vigtigste endpoints, du kan kalde.
+Her er den komplette liste over tilgængelige routes, opdelt efter funktionalitet og adgangskrav.
 
-| Metode | Endpoint | Beskrivelse | Eksempel |
+### 🔐 Autentificering
+| Metode | Endpoint | Beskrivelse | Adgang |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/artists` | Henter alle kunstnere | `[{"name": "Kendrick Lamar", ...}]` |
-| `GET` | `/api/schedule` | Henter fuld tidsplan | `{"Wednesday": [...]}` |
-| `GET` | `/api/stages` | Liste over scener | `["Orange", "Arena", ...]` |
-| `GET` | `/api/artist/:id` | Detaljer om én kunstner | `{"id": 42, "bio": "..."}` |
+| `POST` | `/auth/login` | Log ind og modtag token/session | Alle |
+| `POST` | `/auth/register` | Opret ny brugerprofil | Alle |
 
+### 🎸 Kunstnere (Artists)
+| Metode | Endpoint | Beskrivelse | Adgang |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/artists/` | Hent liste over alle kunstnere | Alle |
+| `POST` | `/artists/` | Opret en ny kunstner | **Admin** |
+| `PUT` | `/artists/{id}/` | Opdater data for en kunstner | **Admin** |
+| `DELETE` | `/artists/{id}/` | Slet en kunstner fra programmet | **Admin** |
+
+### ⭐ Favoritter (User)
+| Metode | Endpoint | Beskrivelse | Adgang |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/favorites/` | Se dine egne favoritter | User |
+| `POST` | `/favorites/{id}/` | Tilføj kunstner (via ID) til favoritter | User |
+| `DELETE` | `/favorites/{id}/` | Fjern kunstner fra favoritter | User |
+
+### ℹ️ System
+| Metode | Endpoint | Beskrivelse | Adgang |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/routes` | Oversigt over alle aktive routes (Javalin) | - |
 ### Eksempel på response (JSON)
 
 ```json
 {
-  "artist": "Blur",
-  "stage": "Orange Scene",
-  "time": "23:00",
-  "day": "Friday",
-  "tags": ["Britpop", "Rock"]
-}
+    "id": 1,
+    "name": "Kendrick Lamar",
+    "stage": "Orange Scene",
+    "day": "Onsdag",
+    "time": "22:00",
+    "genre": "Hip Hop",
+    "description": "Kongen af moderne rap vender tilbage."
+  }
